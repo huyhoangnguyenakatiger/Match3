@@ -1,7 +1,17 @@
+using UnityEngine;
+
 namespace Match3
 {
-    public class Gem
+    [RequireComponent(typeof(SpriteRenderer))]
+    public class Gem : MonoBehaviour
     {
+        GemType type;
 
+        public void SetType(GemType type)
+        {
+            this.type = type;
+            GetComponent<SpriteRenderer>().sprite = type.sprite;
+        }
+        public GemType GetType => type;
     }
 }

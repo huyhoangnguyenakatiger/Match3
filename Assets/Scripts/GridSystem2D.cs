@@ -13,7 +13,7 @@ namespace Match3
         Vector3 origin;
         T[,] gridArray;
         CoordinateConverter coordinateConverter;
-        public event Action<int, int, T> OnValueChangeEvent;
+        // public event Action<int, int, T> OnValueChangeEvent;
 
         public static GridSystem2D<T> VerticalConverter(int width, int height, float cellSize, Vector3 origin, bool debug = false)
         {
