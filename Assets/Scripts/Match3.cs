@@ -27,7 +27,7 @@ namespace Match3
                 for (int y = 0; y < height; y++)
                 {
                     Gem gem = Instantiate(gemPrefab, grid.GetWorldPositionCenter(x, y), Quaternion.identity, transform);
-                    // gem.SetType(gemTypes[Random.Range(0, gemTypes.Length)]);
+                    gem.SetType(gemTypes[Random.Range(0, gemTypes.Length)]);
                     var gridObject = new GridObject<Gem>(grid, x, y);
                     gridObject.SetValue(gem);
                     grid.SetValue(x, y, gridObject);
