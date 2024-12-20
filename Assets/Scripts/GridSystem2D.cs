@@ -20,6 +20,11 @@ namespace Match3
             return new GridSystem2D<T>(width, height, cellSize, origin, new VerticalConverter(), debug);
         }
 
+        public static GridSystem2D<T> HorizontalConverter(int width, int height, float cellSize, Vector3 origin, bool debug = false)
+        {
+            return new GridSystem2D<T>(width, height, cellSize, origin, new HorizontalConverter(), debug);
+        }
+
         public GridSystem2D(int width, int height, float cellSize, Vector3 origin, CoordinateConverter coordinateConverter, bool debug)
         {
             this.width = width;
@@ -130,6 +135,29 @@ namespace Match3
             int x = Mathf.FloorToInt(gridPosition.x);
             int y = Mathf.FloorToInt(gridPosition.y);
             return new Vector2Int(x, y);
+        }
+    }
+
+    public class HorizontalConverter : CoordinateConverter
+    {
+        public override Vector3 Forward => Vector3.up;
+
+        public override Vector3 GridToWorld(int x, int z, float cellSize, Vector3 origin)
+        {
+            return new Vector3(x, 0, z) * cellSize + origin;
+        }
+
+        public override Vector3 GridToWorldCenter(int x, int z, float cellSize, Vector3 origin)
+        {
+            return new Vector3(x * cellSize + cellSize * 0.5f, z * cellSize + cellSize * 0.5f, 0);
+        }
+
+        public override Vector2Int WorldToGrid(Vector3 worldPosition, float cellSize, Vector3 origin)
+        {
+            Vector3 gridPosition = (worldPosition + origin) / cellSize;
+            int x = Mathf.FloorToInt(gridPosition.x);
+            int z = Mathf.FloorToInt(gridPosition.y);
+            return new Vector2Int(x, z);
         }
     }
 

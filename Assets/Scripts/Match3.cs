@@ -13,6 +13,7 @@ namespace Match3
         void Start()
         {
             grid = GridSystem2D<GridObject<Gem>>.VerticalConverter(width, height, cellSize, origin, debug);
+            // grid = GridSystem2D<GridObject<Gem>>.HorizontalConverter(width, height, cellSize, origin, debug);
         }
     }
 
