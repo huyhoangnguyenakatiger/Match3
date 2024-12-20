@@ -18,5 +18,7 @@ namespace Match3
         {
             this.gem = gem;
         }
+
+        public T GetValue() => gem;
     }
 }

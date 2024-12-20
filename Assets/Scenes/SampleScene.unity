@@ -467,6 +467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2134220049}
   - component: {fileID: 2134220048}
+  - component: {fileID: 2134220050}
   m_Layer: 0
   m_Name: Match3
   m_TagString: Untagged
@@ -492,7 +493,11 @@ MonoBehaviour:
   origin: {x: 0, y: 0, z: 0}
   debug: 1
   gemPrefab: {fileID: -5196147619751516209, guid: 1f38d2f7578e2fc4fa2d821cfecd4ffe, type: 3}
-  gemTypes: []
+  gemTypes:
+  - {fileID: 11400000, guid: 887666814eb835541868332b3b9cb987, type: 2}
+  - {fileID: 11400000, guid: 8935a67a7b02d0d46ac78bb5a5c80924, type: 2}
+  - {fileID: 11400000, guid: 289940370a4dd4d4d86f96af374192d5, type: 2}
+  - {fileID: 11400000, guid: d587c2f87126f16499b51131fd675a95, type: 2}
 --- !u!4 &2134220049
 Transform:
   m_ObjectHideFlags: 0
@@ -508,6 +513,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2134220050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134220047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: c0195d181a8e2d946bf9c05f3146769e, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
