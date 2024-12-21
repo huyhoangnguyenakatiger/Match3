@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -41,7 +42,9 @@ namespace Match3
         void OnSelectGem()
         {
             var gridPos = grid.GetXY(Camera.main.ScreenToWorldPoint(new Vector3(inputReader.Selected.x, inputReader.Selected.y, 7f)));
-            Debug.Log(gridPos);
+            // var gridPos = grid.GetXY(Camera.main.ScreenToWorldPoint(inputReader.Selected));
+            Debug.Log("Select Position" + gridPos);
+            Debug.Log("Selected Position" + selectedGem);
             if (!IsValidPosition(gridPos) || IsEmptyPosition(gridPos)) return;
 
             if (selectedGem == gridPos)
@@ -61,12 +64,51 @@ namespace Match3
         IEnumerator RunGameLoop(Vector2Int gridPosA, Vector2Int gridPosB)
         {
             yield return StartCoroutine(SwapGems(gridPosA, gridPosB));
-
-            // Matches?
-            // Make Gems explode
-            // Fill empty spots
-
+            List<Vector2Int> matches = FindMatches();
             DeselectGem();
+        }
+
+        List<Vector2Int> FindMatches()
+        {
+            HashSet<Vector2Int> matches = new HashSet<Vector2Int>();
+
+            //horizontal
+            for (var y = 0; y < height; y++)
+            {
+                for (var x = 0; x < width - 2; x++)
+                {
+                    var gemA = grid.GetValue(x, y);
+                    var gemB = grid.GetValue(x + 1, y);
+                    var gemC = grid.GetValue(x + 2, y);
+                    if (gemA == null || gemB == null || gemC == null) continue;
+                    if (gemA.GetValue().GetType() == gemB.GetValue().GetType() && gemB.GetValue().GetType() == gemC.GetValue().GetType())
+                    {
+                        matches.Add(new Vector2Int(x, y));
+                        matches.Add(new Vector2Int(x + 1, y));
+                        matches.Add(new Vector2Int(x + 2, y));
+                    }
+                }
+            }
+            //vertical
+            for (var x = 0; x < width; x++)
+            {
+                for (var y = 0; y < height - 2; y++)
+                {
+                    var gemA = grid.GetValue(x, y);
+                    var gemB = grid.GetValue(x, y + 1);
+                    var gemC = grid.GetValue(x, y + 2);
+                    if (gemA == null || gemB == null || gemC == null) continue;
+                    if (gemA.GetValue().GetType() == gemB.GetValue().GetType() && gemB.GetValue().GetType() == gemC.GetValue().GetType())
+                    {
+                        matches.Add(new Vector2Int(x, y));
+                        matches.Add(new Vector2Int(x, y + 1));
+                        matches.Add(new Vector2Int(x, y + 2));
+                    }
+                }
+            }
+
+            return new List<Vector2Int>(matches);
+
         }
 
         IEnumerator SwapGems(Vector2Int gridPosA, Vector2Int gridPosB)
