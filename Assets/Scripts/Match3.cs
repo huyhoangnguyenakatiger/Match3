@@ -40,8 +40,8 @@ namespace Match3
 
         void OnSelectGem()
         {
-            var gridPos = grid.GetXY(Camera.main.ScreenToWorldPoint(inputReader.Selected));
-
+            var gridPos = grid.GetXY(Camera.main.ScreenToWorldPoint(new Vector3(inputReader.Selected.x, inputReader.Selected.y, 7f)));
+            Debug.Log(gridPos);
             if (!IsValidPosition(gridPos) || IsEmptyPosition(gridPos)) return;
 
             if (selectedGem == gridPos)
@@ -105,7 +105,7 @@ namespace Match3
         void CreateGem(int x, int y)
         {
             var gem = Instantiate(gemPrefab, grid.GetWorldPositionCenter(x, y), Quaternion.identity, transform);
-            // gem.SetType(gemTypes[Random.Range(0, gemTypes.Length)]);
+            gem.SetType(gemTypes[Random.Range(0, gemTypes.Length)]);
             var gridObject = new GridObject<Gem>(grid, x, y);
             gridObject.SetValue(gem);
             grid.SetValue(x, y, gridObject);

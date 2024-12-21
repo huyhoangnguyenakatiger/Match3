@@ -131,7 +131,7 @@ namespace Match3
 
         public override Vector2Int WorldToGrid(Vector3 worldPosition, float cellSize, Vector3 origin)
         {
-            Vector3 gridPosition = (worldPosition + origin) / cellSize;
+            Vector3 gridPosition = (worldPosition - origin) / cellSize;
             int x = Mathf.FloorToInt(gridPosition.x);
             int y = Mathf.FloorToInt(gridPosition.y);
             return new Vector2Int(x, y);
