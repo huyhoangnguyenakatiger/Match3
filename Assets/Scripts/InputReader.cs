@@ -4,26 +4,43 @@ using UnityEngine.InputSystem;
 
 namespace Match3
 {
+    [RequireComponent(typeof(PlayerInput))]
     public class InputReader : MonoBehaviour
     {
-        PlayerInput playerInput;
-        InputAction selectAction;
-        InputAction fireAction;
+
+        Vector2 selected;
+        bool fire = false;
+
+        public Vector2 Selected => selected;
         public event Action Fire;
 
-        public Vector2 Selected => selectAction.ReadValue<Vector2>();
-        void Start()
+        public void OnSelect(InputValue value)
         {
-            playerInput = GetComponent<PlayerInput>();
-            selectAction = playerInput.actions["Select"];
-            fireAction = playerInput.actions["Fire"];
-            fireAction.performed += OnFire;
+            SelectInput(value.Get<Vector2>());
         }
 
-        void OnDestroy()
+        public void OnFire(InputValue value)
         {
-            fireAction.performed -= OnFire;
+            FireInput(value.isPressed);
         }
-        void OnFire(InputAction.CallbackContext obj) => Fire?.Invoke();
+
+        // void Update(){
+        //     Debug.Log(fire);
+        // }
+        public void FireInput(bool newFireState)
+        {
+            fire = newFireState;
+            if (fire)
+            {
+                Fire?.Invoke();
+            }
+            Debug.Log(selected);
+            fire = false;
+        }
+
+        public void SelectInput(Vector2 newSelected)
+        {
+            selected = newSelected;
+        }
     }
 }

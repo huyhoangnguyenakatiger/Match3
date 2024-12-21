@@ -1,0 +1,54 @@
+{
+    "name": "Match3Actions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "d2b086af-37a7-4b97-9112-e433b5f6ec69",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Value",
+                    "id": "1502ec3c-121c-4e60-92a9-5cd01fa566c7",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "fb5336c3-0c96-4d43-a309-3a685cfb50d5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d931b1e7-9324-43c4-ad6f-497b7b3ddfe1",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e3794b9-8605-40e9-ab82-875a4e5dfc29",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

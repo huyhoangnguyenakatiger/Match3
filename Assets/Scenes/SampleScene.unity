@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 2134220049}
   - component: {fileID: 2134220048}
   - component: {fileID: 2134220050}
+  - component: {fileID: 2134220051}
   m_Layer: 0
   m_Name: Match3
   m_TagString: Untagged
@@ -490,7 +491,7 @@ MonoBehaviour:
   width: 8
   height: 8
   cellSize: 1
-  origin: {x: 0, y: 0, z: 0}
+  originPosition: {x: 0, y: 0, z: 0}
   debug: 1
   gemPrefab: {fileID: -5196147619751516209, guid: 1f38d2f7578e2fc4fa2d821cfecd4ffe, type: 3}
   gemTypes:
@@ -498,6 +499,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8935a67a7b02d0d46ac78bb5a5c80924, type: 2}
   - {fileID: 11400000, guid: 289940370a4dd4d4d86f96af374192d5, type: 2}
   - {fileID: 11400000, guid: d587c2f87126f16499b51131fd675a95, type: 2}
+  ease: 5
 --- !u!4 &2134220049
 Transform:
   m_ObjectHideFlags: 0
@@ -525,7 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: c0195d181a8e2d946bf9c05f3146769e, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 198335f0ffe696a42859ac71ce0d1435, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -537,12 +539,80 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cb00005a-bc77-40b7-9a1f-00d5207fba79
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3b15a4dd-0948-45d3-b9ea-943b33fa53a4
+    m_ActionName: 'Player/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 904f9e37-bee6-4f8f-af78-192fed6d9f6c
+    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9f92da72-29de-470d-b985-96768e4386e1
+    m_ActionName: 'Player/Select[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 41a4897a-f539-4831-9b20-b03e03c00e8f
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2e691166-e8ee-4f45-a4e3-91de9f6755d5
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 026b79b3-ef06-41c5-bd9f-3ba02d5dd293
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b366b60a-573a-48a7-9625-109e92c9fc07
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9cccbad4-dce6-42f1-adca-d0917a103be1
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 39a5300c-77ec-45af-aa6f-20b6f06720de
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4fbbbd96-499c-4368-a02d-317ae6e15beb
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3ee3b078-978d-488f-9eab-cee46d69c902
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8b71b9d4-7b29-436c-852e-1874dd6ef9e6
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 72e7ab2d-4aae-469b-809f-fc4e31e17705
+    m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2134220051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134220047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f74a7d5ba671c149a85f9ca917b0df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

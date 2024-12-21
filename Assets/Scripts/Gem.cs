@@ -12,6 +12,6 @@ namespace Match3
             this.type = type;
             GetComponent<SpriteRenderer>().sprite = type.sprite;
         }
-        public GemType GetType => type;
+        public GemType GetType() => type;
     }
 }
