@@ -13,5 +13,6 @@ namespace Match3
             GetComponent<SpriteRenderer>().sprite = type.sprite;
         }
         public GemType GetType() => type;
+        public void DestroyGem() => Destroy(gameObject);
     }
 }

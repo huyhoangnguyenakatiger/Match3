@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -64,8 +65,65 @@ namespace Match3
         IEnumerator RunGameLoop(Vector2Int gridPosA, Vector2Int gridPosB)
         {
             yield return StartCoroutine(SwapGems(gridPosA, gridPosB));
+
             List<Vector2Int> matches = FindMatches();
+
+            yield return StartCoroutine(ExplodeGem(matches));
+
+            yield return StartCoroutine(MakeGemsFall());
+
+            yield return StartCoroutine(FillEmptySpots());
+
             DeselectGem();
+        }
+
+        IEnumerator FillEmptySpots()
+        {
+            yield return null;
+        }
+
+        IEnumerator MakeGemsFall()
+        {
+            for (var x = 0; x < width; x++)
+            {
+                for (var y = 0; y < height; y++)
+                {
+                    if (grid.GetValue(x, y) == null)
+                    {
+                        for (var i = y + 1; i < height; i++)
+                        {
+                            if (grid.GetValue(x, i) != null)
+                            {
+                                var gem = grid.GetValue(x, i);
+                                grid.SetValue(x, i, null);
+                                grid.SetValue(x, y, gem);
+
+                                gem.GetValue().transform.DOLocalMove(grid.GetWorldPositionCenter(x, y), 0.5f).SetEase(ease);
+
+                                yield return new WaitForSeconds(0.5f);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        IEnumerator ExplodeGem(List<Vector2Int> matches)
+        {
+            foreach (Vector2Int match in matches)
+            {
+                var gem = grid.GetValue(match.x, match.y).GetValue();
+                grid.SetValue(match.x, match.y, null);
+
+                gem.transform.DOPunchScale(Vector3.one * 0.1f, 1f, 1, 0.5f);
+
+                yield return new WaitForSeconds(0.1f);
+
+                gem.DestroyGem();
+
+            }
+
         }
 
         List<Vector2Int> FindMatches()
