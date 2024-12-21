@@ -79,7 +79,17 @@ namespace Match3
 
         IEnumerator FillEmptySpots()
         {
-            yield return null;
+            for (var x = 0; x < width; x++)
+            {
+                for (var y = 0; y < height; y++)
+                {
+                    if (grid.GetValue(x, y) == null)
+                    {
+                        CreateGem(x, y);
+                        yield return new WaitForSeconds(0.5f);
+                    }
+                }
+            }
         }
 
         IEnumerator MakeGemsFall()
