@@ -22,6 +22,7 @@ namespace Match3
         public void FireInput(bool newFireState)
         {
             fire = newFireState;
+            Debug.Log(Camera.main.ScreenToWorldPoint(new Vector3(selected.x, selected.y, 4)));
             if (fire)
             {
                 Fire?.Invoke();

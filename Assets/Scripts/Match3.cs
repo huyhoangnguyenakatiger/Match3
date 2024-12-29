@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Match3
@@ -20,13 +22,18 @@ namespace Match3
         [SerializeField] Ease ease = Ease.InQuad;
 
         GridSystem2D<GridObject<Gem>> grid;
-
+        AudioManager audioManager;
+        [SerializeField] GameObject explosion;
         InputReader inputReader;
         Vector2Int selectedGem = Vector2Int.one * -1;
+        [SerializeField] TMP_Text scoreText;
+        [SerializeField] Button quitButton;
+        int score = 0;
 
         void Awake()
         {
             inputReader = GetComponent<InputReader>();
+            audioManager = GetComponent<AudioManager>();
         }
 
         void OnDestroy()
@@ -38,23 +45,29 @@ namespace Match3
         {
             InitializeGrid();
             inputReader.Fire += OnSelectGem;
+            quitButton.onClick.AddListener(() => Application.Quit());
         }
+
+        // void Update()
+        // {
+        //     scoreText.text = score.ToString();
+        // }
 
         void OnSelectGem()
         {
             var gridPos = grid.GetXY(Camera.main.ScreenToWorldPoint(new Vector3(inputReader.Selected.x, inputReader.Selected.y, 7f)));
             // var gridPos = grid.GetXY(Camera.main.ScreenToWorldPoint(inputReader.Selected));
-            Debug.Log("Select Position" + gridPos);
-            Debug.Log("Selected Position" + selectedGem);
             if (!IsValidPosition(gridPos) || IsEmptyPosition(gridPos)) return;
 
             if (selectedGem == gridPos)
             {
                 DeselectGem();
+                audioManager.PlayDeselect();
             }
             else if (selectedGem == Vector2Int.one * -1)
             {
                 SelectGem(gridPos);
+                audioManager.PlayClick();
             }
             else
             {
@@ -68,6 +81,8 @@ namespace Match3
 
             List<Vector2Int> matches = FindMatches();
 
+            CalculateScore(matches);
+
             yield return StartCoroutine(ExplodeGem(matches));
 
             yield return StartCoroutine(MakeGemsFall());
@@ -75,6 +90,16 @@ namespace Match3
             yield return StartCoroutine(FillEmptySpots());
 
             DeselectGem();
+        }
+
+        void CalculateScore(List<Vector2Int> matches)
+        {
+            if (matches.Count == 0)
+            {
+                return;
+            }
+            score += matches.Count * 10;
+            scoreText.text = score.ToString();
         }
 
         IEnumerator FillEmptySpots()
@@ -86,7 +111,8 @@ namespace Match3
                     if (grid.GetValue(x, y) == null)
                     {
                         CreateGem(x, y);
-                        yield return new WaitForSeconds(0.5f);
+                        audioManager.PlayPop();
+                        yield return new WaitForSeconds(0.2f);
                     }
                 }
             }
@@ -108,9 +134,10 @@ namespace Match3
                                 grid.SetValue(x, i, null);
                                 grid.SetValue(x, y, gem);
 
-                                gem.GetValue().transform.DOLocalMove(grid.GetWorldPositionCenter(x, y), 0.5f).SetEase(ease);
+                                gem.GetValue().transform.DOLocalMove(grid.GetWorldPositionCenter(x, y), 0.2f).SetEase(ease);
 
-                                yield return new WaitForSeconds(0.5f);
+                                audioManager.PlayWoosh();
+                                yield return new WaitForSeconds(0.2f);
                                 break;
                             }
                         }
@@ -121,12 +148,16 @@ namespace Match3
 
         IEnumerator ExplodeGem(List<Vector2Int> matches)
         {
+            audioManager.PlayPop();
             foreach (Vector2Int match in matches)
             {
+
                 var gem = grid.GetValue(match.x, match.y).GetValue();
                 grid.SetValue(match.x, match.y, null);
 
-                gem.transform.DOPunchScale(Vector3.one * 0.1f, 1f, 1, 0.5f);
+                ExplodeVFX(match);
+
+                gem.transform.DOPunchScale(Vector3.one * 0.1f, 0.2f, 1, 0.5f);
 
                 yield return new WaitForSeconds(0.1f);
 
@@ -134,6 +165,13 @@ namespace Match3
 
             }
 
+        }
+
+        void ExplodeVFX(Vector2Int match)
+        {
+            var fx = Instantiate(explosion, transform);
+            fx.transform.position = grid.GetWorldPositionCenter(match.x, match.y);
+            Destroy(fx, 5f);
         }
 
         List<Vector2Int> FindMatches()
@@ -175,6 +213,16 @@ namespace Match3
                 }
             }
 
+            if (matches.Count == 0)
+            {
+                audioManager.PlayNoMatch();
+
+            }
+            else
+            {
+                audioManager.PlayMatch();
+            }
+
             return new List<Vector2Int>(matches);
 
         }
@@ -184,18 +232,17 @@ namespace Match3
             var gridObjectA = grid.GetValue(gridPosA.x, gridPosA.y);
             var gridObjectB = grid.GetValue(gridPosB.x, gridPosB.y);
 
-            // See README for a link to the DOTween asset
             gridObjectA.GetValue().transform
-                .DOLocalMove(grid.GetWorldPositionCenter(gridPosB.x, gridPosB.y), 0.5f)
+                .DOLocalMove(grid.GetWorldPositionCenter(gridPosB.x, gridPosB.y), 0.2f)
                 .SetEase(ease);
             gridObjectB.GetValue().transform
-                .DOLocalMove(grid.GetWorldPositionCenter(gridPosA.x, gridPosA.y), 0.5f)
+                .DOLocalMove(grid.GetWorldPositionCenter(gridPosA.x, gridPosA.y), 0.2f)
                 .SetEase(ease);
 
             grid.SetValue(gridPosA.x, gridPosA.y, gridObjectB);
             grid.SetValue(gridPosB.x, gridPosB.y, gridObjectA);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         void InitializeGrid()
