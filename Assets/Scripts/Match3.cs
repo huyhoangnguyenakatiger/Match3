@@ -39,6 +39,7 @@ namespace Match3
         void OnDestroy()
         {
             inputReader.Fire -= OnSelectGem;
+            DOTween.KillAll();
         }
 
         void Start()
@@ -133,8 +134,11 @@ namespace Match3
                                 var gem = grid.GetValue(x, i);
                                 grid.SetValue(x, i, null);
                                 grid.SetValue(x, y, gem);
-
-                                gem.GetValue().transform.DOLocalMove(grid.GetWorldPositionCenter(x, y), 0.2f).SetEase(ease);
+                                if (gem != null && gem.GetValue().transform != null)
+                                {
+                                    gem.GetValue().transform.DOLocalMove(grid.GetWorldPositionCenter(x, y), 0.2f).SetEase(ease);
+                                }
+                                // gem.GetValue().transform.DOLocalMove(grid.GetWorldPositionCenter(x, y), 0.2f).SetEase(ease);
 
                                 audioManager.PlayWoosh();
                                 yield return new WaitForSeconds(0.2f);
@@ -151,21 +155,25 @@ namespace Match3
             audioManager.PlayPop();
             foreach (Vector2Int match in matches)
             {
+                var gem = grid.GetValue(match.x, match.y)?.GetValue();
+                if (gem == null) continue;
 
-                var gem = grid.GetValue(match.x, match.y).GetValue();
                 grid.SetValue(match.x, match.y, null);
 
                 ExplodeVFX(match);
 
-                gem.transform.DOPunchScale(Vector3.one * 0.1f, 0.2f, 1, 0.5f);
+                if (gem != null && gem.transform != null)
+                {
+                    gem.transform.DOPunchScale(Vector3.one * 0.1f, 0.2f, 1, 0.5f);
+                }
 
                 yield return new WaitForSeconds(0.1f);
 
                 gem.DestroyGem();
-
+                DOTween.Kill(gem.transform);
             }
-
         }
+
 
         void ExplodeVFX(Vector2Int match)
         {
@@ -232,13 +240,22 @@ namespace Match3
             var gridObjectA = grid.GetValue(gridPosA.x, gridPosA.y);
             var gridObjectB = grid.GetValue(gridPosB.x, gridPosB.y);
 
-            gridObjectA.GetValue().transform
+            // gridObjectA.GetValue().transform
+            //     .DOLocalMove(grid.GetWorldPositionCenter(gridPosB.x, gridPosB.y), 0.2f)
+            //     .SetEase(ease);
+            // gridObjectB.GetValue().transform
+            //     .DOLocalMove(grid.GetWorldPositionCenter(gridPosA.x, gridPosA.y), 0.2f)
+            //     .SetEase(ease);
+            if (gridObjectA != null && gridObjectA.GetValue().transform != null && gridObjectB != null && gridObjectB.GetValue().transform != null)
+            {
+                gridObjectA.GetValue().transform
                 .DOLocalMove(grid.GetWorldPositionCenter(gridPosB.x, gridPosB.y), 0.2f)
                 .SetEase(ease);
-            gridObjectB.GetValue().transform
-                .DOLocalMove(grid.GetWorldPositionCenter(gridPosA.x, gridPosA.y), 0.2f)
-                .SetEase(ease);
+                gridObjectB.GetValue().transform
+                    .DOLocalMove(grid.GetWorldPositionCenter(gridPosA.x, gridPosA.y), 0.2f)
+                    .SetEase(ease);
 
+            }
             grid.SetValue(gridPosA.x, gridPosA.y, gridObjectB);
             grid.SetValue(gridPosB.x, gridPosB.y, gridObjectA);
 
